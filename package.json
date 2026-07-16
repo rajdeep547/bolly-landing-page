@@ -1,0 +1,15 @@
+{
+  "name": "bolly-landing-page",
+  "version": "1.0.0",
+  "description": "Bolly shampoo landing page with 3D product visualization",
+  "scripts": {
+    "preview": "node scripts/preview-server.js",
+    "wordpress:up": "docker-compose up -d",
+    "wordpress:down": "docker-compose down",
+    "wordpress:setup": "node scripts/setup-wordpress.js",
+    "package": "node scripts/package.js"
+  },
+  "dependencies": {
+    "three": "^0.128.0"
+  }
+}

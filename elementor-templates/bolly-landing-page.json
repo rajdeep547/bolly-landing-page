@@ -1,0 +1,59 @@
+{
+  "version": "0.4",
+  "title": "Bolly Landing Page",
+  "type": "page",
+  "content": [
+    {
+      "id": "a1b2c3d",
+      "elType": "section",
+      "isInner": false,
+      "settings": {
+        "layout": "full_width",
+        "gap": "no",
+        "height": "min-height",
+        "custom_height": {
+          "unit": "vh",
+          "size": 100,
+          "sizes": []
+        },
+        "content_position": "middle",
+        "padding": {
+          "unit": "px",
+          "top": "0",
+          "right": "0",
+          "bottom": "0",
+          "left": "0",
+          "isLinked": true
+        }
+      },
+      "elements": [
+        {
+          "id": "e4f5g6h",
+          "elType": "column",
+          "isInner": false,
+          "settings": {
+            "_column_size": 100,
+            "padding": {
+              "unit": "px",
+              "top": "0",
+              "right": "0",
+              "bottom": "0",
+              "left": "0",
+              "isLinked": true
+            }
+          },
+          "elements": [
+            {
+              "id": "i7j8k9l",
+              "elType": "widget",
+              "isInner": false,
+              "widgetType": "bolly_landing_page",
+              "settings": {}
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "page_settings": []
+}

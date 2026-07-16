@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolly - Shampoo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial Black', 'Helvetica Neue', Arial, sans-serif;
+            background: #1a1a2e;
+            overflow: hidden;
+            height: 100vh;
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: radial-gradient(ellipse at center, #2a1a3e 0%, #0d0d1a 100%);
+            overflow: hidden;
+        }
+
+        /* Background decorative elements */
+        .bg-circle {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.05;
+            pointer-events: none;
+        }
+        .bg-circle-1 {
+            width: 600px;
+            height: 600px;
+            top: -200px;
+            right: -100px;
+            background: #6c3ce0;
+        }
+        .bg-circle-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -100px;
+            left: -100px;
+            background: #e03c8a;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, #6c3ce0, #e03c8a);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+        }
+
+        .nav {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .nav a:hover {
+            color: #e03c8a;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, #6c3ce0, #e03c8a);
+            color: white !important;
+            padding: 10px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            -webkit-text-fill-color: white !important;
+        }
+
+        .nav-cta:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(108, 60, 224, 0.4);
+        }
+
+        /* 3D Canvas */
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        /* Overlay Content - Matches Reference Design */
+        .overlay-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 10;
+            pointer-events: none;
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        .product-title {
+            font-size: 72px;
+            font-weight: 900;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #6c3ce0, #e03c8a, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 60px rgba(108, 60, 224, 0.3);
+            margin-bottom: 10px;
+            pointer-events: auto;
+        }
+
+        .product-subtitle {
+            font-size: 18px;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            font-family: 'Arial', sans-serif;
+            font-weight: 300;
+            margin-bottom: 30px;
+            pointer-events: auto;
+        }
+
+        .product-tagline {
+            font-size: 14px;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 4px;
+            font-family: 'Arial', sans-serif;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+            pointer-events: auto;
+        }
+
+        .btn-explore {
+            pointer-events: auto;
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.2);
+            padding: 16px 50px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s;
+            margin-top: 20px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .btn-explore:hover {
+            background: linear-gradient(135deg, #6c3ce0, #e03c8a);
+            border-color: transparent;
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(108, 60, 224, 0.4);
+        }
+
+        /* Decorative text elements */
+        .deco-text {
+            position: absolute;
+            font-size: 120px;
+            font-weight: 900;
+            color: rgba(255,255,255,0.02);
+            pointer-events: none;
+            letter-spacing: 20px;
+            text-transform: uppercase;
+            font-family: 'Arial Black', sans-serif;
+            white-space: nowrap;
+        }
+
+        .deco-text-1 {
+            top: 15%;
+            right: -5%;
+            transform: rotate(-5deg);
+            font-size: 100px;
+        }
+
+        .deco-text-2 {
+            bottom: 15%;
+            left: -5%;
+            transform: rotate(3deg);
+            font-size: 80px;
+        }
+
+        /* Rotation Hint */
+        .hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.15);
+            font-size: 12px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            z-index: 10;
+        }
+
+        .hint-icon {
+            font-size: 24px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: translateX(-10px); }
+            50% { opacity: 1; transform: translateX(10px); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .product-title { font-size: 56px; letter-spacing: 5px; }
+            .product-subtitle { font-size: 16px; letter-spacing: 8px; }
+            .deco-text { display: none; }
+        }
+
+        @media (max-width: 768px) {
+            .header { padding: 15px 20px; }
+            .logo { font-size: 22px; }
+            .nav { gap: 20px; }
+            .nav a:not(.nav-cta) { display: none; }
+            .product-title { font-size: 42px; letter-spacing: 4px; }
+            .product-subtitle { font-size: 12px; letter-spacing: 6px; }
+            .btn-explore { padding: 14px 35px; font-size: 12px; }
+        }
+
+        @media (max-width: 480px) {
+            .header { padding: 12px 15px; }
+            .logo { font-size: 18px; }
+            .nav-cta { padding: 8px 20px; font-size: 12px; }
+            .product-title { font-size: 32px; letter-spacing: 2px; }
+            .product-subtitle { font-size: 10px; letter-spacing: 4px; }
+            .btn-explore { padding: 12px 28px; font-size: 11px; }
+            .hint { bottom: 20px; font-size: 10px; }
+        }
+
+        @media (max-width: 320px) {
+            .product-title { font-size: 26px; }
+            .product-subtitle { font-size: 8px; letter-spacing: 3px; }
+            .btn-explore { padding: 10px 20px; font-size: 10px; }
+            .logo { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- Background Decor -->
+        <div class="bg-circle bg-circle-1"></div>
+        <div class="bg-circle bg-circle-2"></div>
+        
+        <!-- Decorative Text -->
+        <div class="deco-text deco-text-1">FROM ROOT TO SHINE</div>
+        <div class="deco-text deco-text-2">KNOCK OUT FLAKES</div>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">Bolly</div>
+            <nav class="nav">
+                <a href="#">About</a>
+                <a href="#">Products</a>
+                <a href="#" class="nav-cta">Shop Now</a>
+            </nav>
+        </header>
+
+        <!-- 3D Canvas -->
+        <div id="canvas-container">
+            <!-- Overlay Text -->
+            <div class="overlay-content">
+                <div class="product-tagline">Wonderful World of</div>
+                <h1 class="product-title">Bolly</h1>
+                <div class="product-subtitle">Shampoo</div>
+                <button class="btn-explore">Explore More →</button>
+            </div>
+
+            <!-- Hint -->
+            <div class="hint">
+                <span class="hint-icon">↔</span>
+                <span>Drag to rotate</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        (function() {
+            const container = document.getElementById('canvas-container');
+            
+            // Scene
+            const scene = new THREE.Scene();
+            scene.background = null; // Transparent
+            
+            // Camera
+            const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(0, 0.3, 4.5);
+            camera.lookAt(0, 0, 0);
+            
+            // Renderer
+            const renderer = new THREE.WebGLRenderer({ 
+                antialias: true,
+                alpha: true
+            });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            container.appendChild(renderer.domElement);
+            
+            // Lights
+            const ambient = new THREE.AmbientLight(0xffffff, 0.3);
+            scene.add(ambient);
+            
+            const keyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            keyLight.position.set(2, 3, 4);
+            keyLight.castShadow = true;
+            scene.add(keyLight);
+            
+            const fillLight = new THREE.DirectionalLight(0x6c3ce0, 0.3);
+            fillLight.position.set(-2, 1, -2);
+            scene.add(fillLight);
+            
+            const rimLight = new THREE.DirectionalLight(0xe03c8a, 0.3);
+            rimLight.position.set(0, 2, -4);
+            scene.add(rimLight);
+            
+            const bottomLight = new THREE.DirectionalLight(0x6c3ce0, 0.2);
+            bottomLight.position.set(0, -3, 0);
+            scene.add(bottomLight);
+            
+            // Create Bottle Group
+            const bottle = new THREE.Group();
+            
+            // Main Body - sleek shampoo bottle shape
+            const bodyGeo = new THREE.CylinderGeometry(1.0, 0.7, 2.6, 48);
+            const bodyMat = new THREE.MeshPhysicalMaterial({
+                color: 0x6c3ce0,
+                metalness: 0.1,
+                roughness: 0.2,
+                clearcoat: 0.4,
+                clearcoatRoughness: 0.3,
+                transparent: true,
+                opacity: 0.92,
+                emissive: 0x3a1a6e,
+                emissiveIntensity: 0.05
+            });
+            const body = new THREE.Mesh(bodyGeo, bodyMat);
+            body.castShadow = true;
+            body.position.y = 0;
+            bottle.add(body);
+            
+            // Curved top transition
+            const topGeo = new THREE.CylinderGeometry(0.7, 0.9, 0.3, 32);
+            const topMat = new THREE.MeshPhysicalMaterial({
+                color: 0x6c3ce0,
+                metalness: 0.1,
+                roughness: 0.2,
+                clearcoat: 0.3,
+                transparent: true,
+                opacity: 0.9
+            });
+            const top = new THREE.Mesh(topGeo, topMat);
+            top.castShadow = true;
+            top.position.y = 1.45;
+            bottle.add(top);
+            
+            // Neck
+            const neckGeo = new THREE.CylinderGeometry(0.45, 0.65, 0.5, 24);
+            const neckMat = new THREE.MeshPhysicalMaterial({
+                color: 0x5a2a9e,
+                metalness: 0.2,
+                roughness: 0.3,
+                clearcoat: 0.2
+            });
+            const neck = new THREE.Mesh(neckGeo, neckMat);
+            neck.castShadow = true;
+            neck.position.y = 1.85;
+            bottle.add(neck);
+            
+            // Cap - sleek pump style
+            const capGeo = new THREE.CylinderGeometry(0.5, 0.55, 0.4, 24);
+            const capMat = new THREE.MeshPhysicalMaterial({
+                color: 0x2a1a4e,
+                metalness: 0.6,
+                roughness: 0.2,
+                clearcoat: 0.5
+            });
+            const cap = new THREE.Mesh(capGeo, capMat);
+            cap.castShadow = true;
+            cap.position.y = 2.25;
+            bottle.add(cap);
+            
+            // Cap top detail
+            const capTopGeo = new THREE.SphereGeometry(0.2, 16, 16);
+            const capTopMat = new THREE.MeshPhysicalMaterial({
+                color: 0x4a2a7e,
+                metalness: 0.7,
+                roughness: 0.1
+            });
+            const capTop = new THREE.Mesh(capTopGeo, capTopMat);
+            capTop.position.y = 2.45;
+            bottle.add(capTop);
+            
+            // Decorative ring 1
+            const ring1Geo = new THREE.TorusGeometry(0.95, 0.02, 16, 48);
+            const ring1Mat = new THREE.MeshPhysicalMaterial({
+                color: 0xe03c8a,
+                metalness: 0.3,
+                roughness: 0.2,
+                emissive: 0xe03c8a,
+                emissiveIntensity: 0.1
+            });
+            const ring1 = new THREE.Mesh(ring1Geo, ring1Mat);
+            ring1.position.y = -0.3;
+            ring1.rotation.x = Math.PI / 2;
+            bottle.add(ring1);
+            
+            // Decorative ring 2
+            const ring2 = ring1.clone();
+            ring2.position.y = -0.9;
+            ring2.material = ring1Mat.clone();
+            ring2.material.color.setHex(0x6c3ce0);
+            ring2.material.emissive.setHex(0x6c3ce0);
+            bottle.add(ring2);
+            
+            // Brand label area (subtle)
+            const labelGeo = new THREE.CylinderGeometry(0.92, 0.92, 1.0, 32);
+            const labelMat = new THREE.MeshPhysicalMaterial({
+                color: 0x2a1a4e,
+                metalness: 0.1,
+                roughness: 0.5,
+                transparent: true,
+                opacity: 0.15
+            });
+            const label = new THREE.Mesh(labelGeo, labelMat);
+            label.position.y = -0.5;
+            bottle.add(label);
+            
+            scene.add(bottle);
+            
+            // Ground reflection (subtle)
+            const groundGeo = new THREE.RingGeometry(0.3, 1.8, 32);
+            const groundMat = new THREE.MeshPhysicalMaterial({
+                color: 0x6c3ce0,
+                transparent: true,
+                opacity: 0.05,
+                side: THREE.DoubleSide,
+                metalness: 0.8,
+                roughness: 0.1
+            });
+            const ground = new THREE.Mesh(groundGeo, groundMat);
+            ground.rotation.x = -Math.PI / 2;
+            ground.position.y = -1.4;
+            scene.add(ground);
+            
+            // Interaction
+            let isDragging = false;
+            let prevX = 0, prevY = 0;
+            let velocity = { x: 0, y: 0 };
+            let autoRotate = true;
+            let idleTime = 0;
+            
+            // Mouse events
+            renderer.domElement.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                autoRotate = false;
+                prevX = e.clientX;
+                prevY = e.clientY;
+                velocity = { x: 0, y: 0 };
+            });
+            
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - prevX;
+                const dy = e.clientY - prevY;
+                bottle.rotation.y += dx * 0.008;
+                bottle.rotation.x += dy * 0.004;
+                bottle.rotation.x = Math.max(-0.3, Math.min(0.3, bottle.rotation.x));
+                velocity.x = dx * 0.008;
+                velocity.y = dy * 0.004;
+                prevX = e.clientX;
+                prevY = e.clientY;
+            });
+            
+            window.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    setTimeout(() => { 
+                        if (!isDragging) autoRotate = true; 
+                    }, 3000);
+                }
+            });
+            
+            // Touch events
+            let touchX = 0, touchY = 0;
+            renderer.domElement.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                const touch = e.touches[0];
+                touchX = touch.clientX;
+                touchY = touch.clientY;
+                isDragging = true;
+                autoRotate = false;
+                velocity = { x: 0, y: 0 };
+            }, { passive: false });
+            
+            renderer.domElement.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!isDragging || !e.touches.length) return;
+                const touch = e.touches[0];
+                const dx = touch.clientX - touchX;
+                const dy = touch.clientY - touchY;
+                bottle.rotation.y += dx * 0.008;
+                bottle.rotation.x += dy * 0.004;
+                bottle.rotation.x = Math.max(-0.3, Math.min(0.3, bottle.rotation.x));
+                velocity.x = dx * 0.008;
+                velocity.y = dy * 0.004;
+                touchX = touch.clientX;
+                touchY = touch.clientY;
+            }, { passive: false });
+            
+            renderer.domElement.addEventListener('touchend', () => {
+                isDragging = false;
+                setTimeout(() => { 
+                    if (!isDragging) autoRotate = true; 
+                }, 3000);
+            });
+            
+            // Animation
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                if (!isDragging) {
+                    if (autoRotate) {
+                        bottle.rotation.y += 0.004;
+                        // Subtle float animation
+                        const time = Date.now() * 0.001;
+                        bottle.position.y = Math.sin(time * 0.5) * 0.03;
+                    }
+                    // Inertia
+                    if (Math.abs(velocity.x) > 0.0001) {
+                        bottle.rotation.y += velocity.x;
+                        velocity.x *= 0.98;
+                    }
+                    if (Math.abs(velocity.y) > 0.0001) {
+                        bottle.rotation.x += velocity.y;
+                        velocity.y *= 0.98;
+                        bottle.rotation.x = Math.max(-0.3, Math.min(0.3, bottle.rotation.x));
+                    }
+                }
+                
+                renderer.render(scene, camera);
+            }
+            animate();
+            
+            // Resize
+            function resize() {
+                const w = container.clientWidth;
+                const h = container.clientHeight;
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+            window.addEventListener('resize', resize);
+            
+            // Handle visibility change
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    autoRotate = false;
+                } else {
+                    setTimeout(() => { autoRotate = true; }, 1000);
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
